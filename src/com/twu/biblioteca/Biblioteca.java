@@ -68,7 +68,7 @@ public class Biblioteca {
                 return true;
             }
         }
-        printStream.println("There is no such book");
+        printStream.println("Sorry, that book is not available");
         return false;
     }
 

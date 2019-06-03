@@ -100,7 +100,7 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString("There is no such book"));
+        assertThat(testOutStream.toString(), containsString("Sorry, that book is not available"));
         assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
     }
 
