@@ -9,31 +9,31 @@ public class BookTest {
 
     @Test
     public void TestBookName() {
-        Book book = new Book("name");
+        Book book = new Book("name", "", 0);
         assertThat(book.Name(), is("name"));
     }
 
     @Test
     public void TestEmptyBookName() {
-        Book book = new Book("");
+        Book book = new Book("", "", 0);
         assertThat(book.Name(), is(""));
     }
 
     @Test
     public void TestBookNameWithSpecialCharacters() {
-        Book book = new Book("\nthis-is_a\\book");
+        Book book = new Book("\nthis-is_a\\book", "", 0);
         assertThat(book.Name(), is("\nthis-is_a\\book"));
     }
 
     @Test
     public void TestBookAuthor() {
-        Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci");
+        Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 0);
         assertThat(book.Author(), is("Richard Baci"));
     }
 
     @Test
     public void TestBookEmptyAuthor() {
-        Book book = new Book("Jonothan Livingstone Seagull", "");
+        Book book = new Book("Jonothan Livingstone Seagull", "", 0);
         assertThat(book.Author(), is(""));
     }
 

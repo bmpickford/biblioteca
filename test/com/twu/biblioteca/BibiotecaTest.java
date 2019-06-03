@@ -44,7 +44,8 @@ public class BibiotecaTest {
     private String[] booksToStringArray(ArrayList<Book> books) {
         String[] bookNames = new String[books.size()];
         for(int i = 0; i < books.size(); i++) {
-            bookNames[i] = books.get(i).Name();
+            Book book = books.get(i);
+            bookNames[i] = book.Name() + " | " + book.Author() + " | " + book.YearPublished();
         }
 
         return bookNames;
@@ -52,13 +53,13 @@ public class BibiotecaTest {
 
     private ArrayList<Book> getTestBooks() {
         ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("The Philosopher's Stone"));
-        books.add(new Book("The Chamber of Secrets"));
-        books.add(new Book("The Prisoner of Azkaban"));
-        books.add(new Book("The Goblet of Fire"));
-        books.add(new Book("The Order of the Phoenix"));
-        books.add(new Book("The Half-Blood Prince"));
-        books.add(new Book("The Deathly Hallows"));
+        books.add(new Book("The Philosopher's Stone", "J.K Rowling", 1997));
+        books.add(new Book("The Chamber of Secrets", "J.K Rowling", 1998));
+        books.add(new Book("The Prisoner of Azkaban", "J.K Rowling", 1999));
+        books.add(new Book("The Goblet of Fire", "J.K Rowling", 2000));
+        books.add(new Book("The Order of the Phoenix", "J.K Rowling", 2003));
+        books.add(new Book("The Half-Blood Prince", "J.K Rowling", 2005));
+        books.add(new Book("The Deathly Hallows", "J.K Rowling", 2007));
 
         return books;
     }

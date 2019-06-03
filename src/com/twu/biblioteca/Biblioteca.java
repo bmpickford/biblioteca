@@ -30,7 +30,7 @@ public class Biblioteca {
     private void printBookList() {
         printStream.println("The current list of books is: ");
         for(Book book : books) {
-            printStream.println(book.Name());
+            printStream.println(book.Name() + " | " + book.Author() + " | " + book.YearPublished());
         }
     }
 }
