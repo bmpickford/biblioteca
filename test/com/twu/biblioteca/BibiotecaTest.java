@@ -30,26 +30,28 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testPrintBookList() {
+    public void testPrintStartingMessage() {
         ArrayList<Book> books = getTestBooks();
         this.biblioteca = new Biblioteca(new PrintStream(testOutStream), books);
 
         String bookList = String.join("\n", booksToStringArray(books));
 
-        String expectedMessage = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nThe current list of books is: \n" + bookList;
+        String expectedMessage = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nThe current list of books is: \n" + bookList + "\n";
         this.biblioteca.Start();
         assertThat(testOutStream.toString(), is(expectedMessage));
     }
 
-    private String[] booksToStringArray(ArrayList books) {
+    private String[] booksToStringArray(ArrayList<Book> books) {
         String[] bookNames = new String[books.size()];
-        for(int i = 0; i < books.Size(); i++) {
-            bookNames[i] = books.get(i).Name;
+        for(int i = 0; i < books.size(); i++) {
+            bookNames[i] = books.get(i).Name();
         }
+
+        return bookNames;
     }
 
     private ArrayList<Book> getTestBooks() {
-        ArrayList<Books> books = new ArrayList<Books>();
+        ArrayList<Book> books = new ArrayList<Book>();
         books.add(new Book("The Philosopher's Stone"));
         books.add(new Book("The Chamber of Secrets"));
         books.add(new Book("The Prisoner of Azkaban"));
