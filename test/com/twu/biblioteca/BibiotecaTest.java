@@ -79,6 +79,30 @@ public class BibiotecaTest {
         assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "There are no books\n"));
     }
 
+    @Test
+    public void testCheckoutBookByName() {
+        InputStream inputStream = new ByteArrayInputStream("2\nThe Philosopher's Stone\n2\nThe Chamber of Secrets".getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        ArrayList<Book> books = getTestBooks();
+        books.remove(0);
+        books.remove(1);
+        String bookList = String.join("\n", booksToStringArray(books));
+
+        assertThat(testOutStream.toString(), containsString(bookList));
+    }
+
+    @Test
+    public void testCheckoutBookIncorrectName() {
+        InputStream inputStream = new ByteArrayInputStream("2\nThe Phils Stove\nq".getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        assertThat(testOutStream.toString(), containsString("There is no such book"));
+        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+    }
+
     private String[] booksToStringArray(ArrayList<Book> books) {
         String[] bookNames = new String[books.size()];
         for(int i = 0; i < books.size(); i++) {
@@ -108,6 +132,6 @@ public class BibiotecaTest {
     }
 
     private String getWelcomeMessage() {
-        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list\n";
+        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list\n2. Checkout a book";
     }
 }
