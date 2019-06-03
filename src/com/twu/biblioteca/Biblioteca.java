@@ -64,6 +64,7 @@ public class Biblioteca {
         Book book = getBookByName(bookName);
         if (book != null) {
             checkoutBook(book);
+            return true;
         }
         printStream.println("Sorry, that book is not available");
         return false;
