@@ -64,7 +64,7 @@ public class Biblioteca {
         for(int i = 0; i < books.size(); i++) {
             if (books.get(i).Name().equals(bookName)) {
                 Book book = books.remove(i);
-                printStream.println("Checked out '" + book.Name() + "'");
+                printStream.println("Thank you! Enjoy the book");
                 return true;
             }
         }

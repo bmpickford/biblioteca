@@ -91,6 +91,7 @@ public class BibiotecaTest {
         String bookList = String.join("\n", booksToStringArray(books));
 
         assertThat(testOutStream.toString(), containsString(bookList));
+        assertThat(testOutStream.toString(), containsString("Thank you! Enjoy the book"));
     }
 
     @Test
