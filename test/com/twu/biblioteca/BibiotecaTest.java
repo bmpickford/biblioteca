@@ -22,7 +22,7 @@ public class BibiotecaTest {
     @Before
     public void setup() {
         ArrayList<Book> books = getTestBooks();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream(new byte[] { 0 }), books);
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("q".getBytes()), books);
     }
 
     @After
@@ -41,27 +41,24 @@ public class BibiotecaTest {
     public void testPrintWithZeroInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] { 0 }));
         this.biblioteca.Start();
-        testOutStream.reset();
 
-        assertThat(testOutStream.toString(), is(""));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "That is not a valid option\n"));
     }
 
     @Test
     public void testPrintWithInvalidInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream("abc".getBytes()));
         this.biblioteca.Start();
-        testOutStream.reset();
 
-        assertThat(testOutStream.toString(), is(""));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "That is not a valid option\n"));
     }
 
     @Test
     public void testPrintWithNoInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] {}));
         this.biblioteca.Start();
-        testOutStream.reset();
 
-        assertThat(testOutStream.toString(), is(""));
+        assertThat(testOutStream.toString(), is(getWelcomeMessage() + ""));
     }
 
     @Test
@@ -79,7 +76,7 @@ public class BibiotecaTest {
         Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()));
         biblioteca.Start();
 
-        assertThat(testOutStream.toString(), is(getWelcomeMessage() + "There are no books\n"));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "There are no books\n"));
     }
 
     private String[] booksToStringArray(ArrayList<Book> books) {
@@ -111,6 +108,6 @@ public class BibiotecaTest {
     }
 
     private String getWelcomeMessage() {
-        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n1. Show book list\n";
+        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list\n";
     }
 }

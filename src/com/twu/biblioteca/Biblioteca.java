@@ -24,15 +24,29 @@ public class Biblioteca {
 
     public void Start() {
         printWelcomeMessage();
-        printOptionsMessage();
 
-        Scanner scanner = new Scanner(inputStream);
-        if (scanner.hasNext()) {
-            String option = scanner.nextLine();
-            switch (option) {
-                case "1":
-                    printBookList();
-                    break;
+        boolean exitApp = false;
+
+        while (!exitApp) {
+            printOptionsMessage();
+
+            Scanner scanner = new Scanner(inputStream);
+            if (scanner.hasNext()) {
+                String option = scanner.nextLine();
+                switch (option) {
+                    case "1":
+                        printBookList();
+                        break;
+                    case "q":
+                    case "Q":
+                    case "0":
+                        exitApp = true;
+                        break;
+                    default:
+                        printStream.println("That is not a valid option");
+                }
+            } else {
+                exitApp = true;
             }
         }
     }
@@ -43,6 +57,7 @@ public class Biblioteca {
 
     private void printOptionsMessage() {
         printStream.println("Input the number of your option as shown below: \n" +
+                "0. Quit \n" +
                 "1. Show book list");
     }
 
