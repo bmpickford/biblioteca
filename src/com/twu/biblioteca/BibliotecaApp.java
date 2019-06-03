@@ -14,7 +14,7 @@ public class BibliotecaApp {
         books.add(new Book("WWhere's Wally? The Great Picture Hunt!", "Martin Handford", 2006));
         books.add(new Book("Where's Wally? The Incredible Paper Chase", "Martin Handford", 2009));
 
-        Biblioteca biblioteca = new Biblioteca(System.out, books);
+        Biblioteca biblioteca = new Biblioteca(System.out, System.in, books);
         biblioteca.Start();
     }
 }

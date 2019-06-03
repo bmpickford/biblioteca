@@ -6,10 +6,12 @@ import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 
 public class BibiotecaTest {
@@ -20,9 +22,8 @@ public class BibiotecaTest {
     @Before
     public void setup() {
         ArrayList<Book> books = getTestBooks();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), books);
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream(new byte[] { 0 }), books);
     }
-
 
     @After
     public void restoreStreams() {
@@ -32,70 +33,53 @@ public class BibiotecaTest {
 
     @Test
     public void testPrintWelcomeMessage() {
-        String expectedMessage = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\n Input the number of your option as shown below: \n";
         this.biblioteca.Start();
-        assertThat(testOutStream.toString(), is(expectedMessage));
+        assertThat(testOutStream.toString(), is(getWelcomeMessage()));
     }
 
     @Test
     public void testPrintWithZeroInput() {
+        setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] { 0 }));
         this.biblioteca.Start();
         testOutStream.reset();
 
-        // Create input
-        ByteArrayInputStream testIn = new ByteArrayInputStream("0".getBytes());
-        System.setIn(testIn);
-
-        assertThat(testOutStream.toString(), is("That is not a valid option"));
+        assertThat(testOutStream.toString(), is(""));
     }
 
     @Test
     public void testPrintWithInvalidInput() {
+        setupBibliotecaWithInputStream(new ByteArrayInputStream("abc".getBytes()));
         this.biblioteca.Start();
         testOutStream.reset();
 
-        // Create input
-        ByteArrayInputStream testIn = new ByteArrayInputStream("abc".getBytes());
-        System.setIn(testIn);
-
-        assertThat(testOutStream.toString(), is("That is not a valid option"));
+        assertThat(testOutStream.toString(), is(""));
     }
 
     @Test
     public void testPrintWithNoInput() {
+        setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] {}));
         this.biblioteca.Start();
         testOutStream.reset();
 
-        // Create input
-        ByteArrayInputStream testIn = new ByteArrayInputStream("".getBytes());
-        System.setIn(testIn);
-
-        assertThat(testOutStream.toString(), is("That is not a valid option"));
+        assertThat(testOutStream.toString(), is(""));
     }
 
     @Test
     public void testPrintBookList() {
+        InputStream inputStream = new ByteArrayInputStream("1".getBytes());
+        setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-        testOutStream.reset();
+        String bookList = String.join("\n", booksToStringArray(getTestBooks()));
 
-        // Create input
-        ByteArrayInputStream testIn = new ByteArrayInputStream("1".getBytes());
-        System.setIn(testIn);
-
-        assertThat(testOutStream.toString(), is(booksToStringArray(getTestBooks())));
+        assertThat(testOutStream.toString(), containsString(bookList));
     }
 
     @Test
     public void testPrintBookListWithNoBooks() {
-        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream));
+        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()));
         biblioteca.Start();
-        testOutStream.reset();
 
-        // Create input
-        ByteArrayInputStream testIn = new ByteArrayInputStream("1".getBytes());
-        System.setIn(testIn);
-
-        assertThat(testOutStream.toString(), is("\n"));
+        assertThat(testOutStream.toString(), is(getWelcomeMessage() + "There are no books\n"));
     }
 
     private String[] booksToStringArray(ArrayList<Book> books) {
@@ -119,5 +103,14 @@ public class BibiotecaTest {
         books.add(new Book("The Deathly Hallows", "J.K Rowling", 2007));
 
         return books;
+    }
+
+    private void setupBibliotecaWithInputStream(InputStream inputStream) {
+        ArrayList<Book> books = getTestBooks();
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, books);
+    }
+
+    private String getWelcomeMessage() {
+        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n1. Show book list\n";
     }
 }
