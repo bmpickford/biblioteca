@@ -121,6 +121,7 @@ public class BibiotecaTest {
         books.add(book);
         String bookList = String.join("\n", booksToStringArray(books));
 
+        assertThat(testOutStream.toString(), containsString("Thank you for returning the book"));
         assertThat(testOutStream.toString(), containsString(bookList));
     }
 
@@ -138,6 +139,7 @@ public class BibiotecaTest {
         this.biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+        assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
     }
 
     private String[] booksToStringArray(ArrayList<Book> books) {
