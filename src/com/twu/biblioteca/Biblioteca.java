@@ -7,16 +7,21 @@ import java.util.Scanner;
 
 public class Biblioteca {
 
+    private Scanner scanner;
     private PrintStream printStream;
     private InputStream inputStream;
     private ArrayList<Book> books = new ArrayList<Book>();
 
     public Biblioteca(PrintStream printStream, InputStream inputStream) {
+        scanner = new Scanner(inputStream);
+
         this.printStream = printStream;
         this.inputStream = inputStream;
     }
 
     public Biblioteca(PrintStream printStream, InputStream inputStream, ArrayList<Book> books) {
+        scanner = new Scanner(inputStream);
+
         this.printStream = printStream;
         this.inputStream = inputStream;
         this.books = books;
@@ -30,12 +35,16 @@ public class Biblioteca {
         while (!exitApp) {
             printOptionsMessage();
 
-            Scanner scanner = new Scanner(inputStream);
             if (scanner.hasNext()) {
                 String option = scanner.nextLine();
                 switch (option) {
                     case "1":
                         printBookList();
+                        break;
+                    case "2":
+                        printStream.println("Enter the name of the book you want to checkout: ");
+                        String bookName = scanner.nextLine();
+                        checkoutByName(bookName);
                         break;
                     case "q":
                     case "Q":
@@ -51,6 +60,18 @@ public class Biblioteca {
         }
     }
 
+    private boolean checkoutByName(String bookName) {
+        for(int i = 0; i < books.size(); i++) {
+            if (books.get(i).Name().equals(bookName)) {
+                Book book = books.remove(i);
+                printStream.println("Checked out '" + book.Name() + "'");
+                return true;
+            }
+        }
+        printStream.println("There is no such book");
+        return false;
+    }
+
     private void printWelcomeMessage() {
         printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
@@ -58,7 +79,8 @@ public class Biblioteca {
     private void printOptionsMessage() {
         printStream.println("Input the number of your option as shown below: \n" +
                 "0. Quit \n" +
-                "1. Show book list");
+                "1. Show book list \n" +
+                "2. Checkout a book");
     }
 
     private void printBookList() {

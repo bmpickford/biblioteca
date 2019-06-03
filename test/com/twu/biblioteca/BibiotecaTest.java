@@ -81,12 +81,12 @@ public class BibiotecaTest {
 
     @Test
     public void testCheckoutBookByName() {
-        InputStream inputStream = new ByteArrayInputStream("2\nThe Philosopher's Stone\n2\nThe Chamber of Secrets".getBytes());
+        InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Chamber of Secrets" + System.getProperty("line.separator") + "1\nq").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
         ArrayList<Book> books = getTestBooks();
-        books.remove(0);
+        //books.remove(0);
         books.remove(1);
         String bookList = String.join("\n", booksToStringArray(books));
 
@@ -95,7 +95,7 @@ public class BibiotecaTest {
 
     @Test
     public void testCheckoutBookIncorrectName() {
-        InputStream inputStream = new ByteArrayInputStream("2\nThe Phils Stove\nq".getBytes());
+        InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Phils Stove" + System.getProperty("line.separator") + "1").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
@@ -132,6 +132,6 @@ public class BibiotecaTest {
     }
 
     private String getWelcomeMessage() {
-        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list\n2. Checkout a book";
+        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list \n2. Checkout a book\n";
     }
 }
