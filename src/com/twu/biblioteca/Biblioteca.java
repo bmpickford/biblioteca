@@ -61,15 +61,26 @@ public class Biblioteca {
     }
 
     private boolean checkoutByName(String bookName) {
-        for(int i = 0; i < books.size(); i++) {
-            if (books.get(i).Name().equals(bookName)) {
-                Book book = books.remove(i);
-                printStream.println("Thank you! Enjoy the book");
-                return true;
-            }
+        Book book = getBookByName(bookName);
+        if (book != null) {
+            checkoutBook(book);
         }
         printStream.println("Sorry, that book is not available");
         return false;
+    }
+
+    private Book getBookByName(String bookName) {
+        for(int i = 0; i < books.size(); i++) {
+            if (books.get(i).Name().equals(bookName)) {
+                return books.get(i);
+            }
+        }
+        return null;
+    }
+
+    private void checkoutBook(Book book) {
+        books.remove(book);
+        printStream.println("Thank you! Enjoy the book");
     }
 
     private void printWelcomeMessage() {
