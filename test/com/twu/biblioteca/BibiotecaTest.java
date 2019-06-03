@@ -136,8 +136,8 @@ public class BibiotecaTest {
             ).getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-        
-        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks())));
+
+        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
     }
 
     private String[] booksToStringArray(ArrayList<Book> books) {

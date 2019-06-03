@@ -43,8 +43,10 @@ public class Biblioteca {
                         break;
                     case "2":
                         printStream.println("Enter the name of the book you want to checkout: ");
-                        String bookName = scanner.nextLine();
-                        checkoutByName(bookName);
+                        checkoutBookByName();
+                        break;
+                    case "3":
+                        checkInBook();
                         break;
                     case "q":
                     case "Q":
@@ -60,14 +62,31 @@ public class Biblioteca {
         }
     }
 
-    private boolean checkoutByName(String bookName) {
+    private void checkInBook() {
+        printStream.println("Enter the name of the book: ");
+        String name = scanner.nextLine();
+
+        printStream.println("Enter the author of the book: ");
+        String author = scanner.nextLine();
+
+        printStream.println("Enter the year the book was published: ");
+        if (scanner.hasNextInt()) {
+            int year = scanner.nextInt();
+            Book book = new Book(name, author, year);
+            books.add(book);
+        } else {
+            printStream.println("Invalid year");
+        }
+    }
+
+    private void checkoutBookByName() {
+        String bookName = scanner.nextLine();
         Book book = getBookByName(bookName);
         if (book != null) {
-            checkoutBook(book);
-            return true;
+            removeBook(book);
+            return;
         }
         printStream.println("Sorry, that book is not available");
-        return false;
     }
 
     private Book getBookByName(String bookName) {
@@ -79,7 +98,7 @@ public class Biblioteca {
         return null;
     }
 
-    private void checkoutBook(Book book) {
+    private void removeBook(Book book) {
         books.remove(book);
         printStream.println("Thank you! Enjoy the book");
     }
