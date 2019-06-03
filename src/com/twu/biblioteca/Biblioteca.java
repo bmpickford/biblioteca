@@ -23,12 +23,16 @@ public class Biblioteca {
             printBookList();
     }
 
+    public ArrayList<Book> Books() {
+        return books;
+    }
+
     private void printWelcomeMessage() {
         printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
 
     private void printBookList() {
-        printStream.println("The current list of books is: ");
+        printStream.println("\nThe current list of books is: ");
         for(Book book : books) {
             printStream.println(book.Name() + " | " + book.Author() + " | " + book.YearPublished());
         }
