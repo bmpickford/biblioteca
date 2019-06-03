@@ -86,7 +86,6 @@ public class BibiotecaTest {
         this.biblioteca.Start();
 
         ArrayList<Book> books = getTestBooks();
-        //books.remove(0);
         books.remove(1);
         String bookList = String.join("\n", booksToStringArray(books));
 
@@ -102,6 +101,43 @@ public class BibiotecaTest {
 
         assertThat(testOutStream.toString(), containsString("Sorry, that book is not available"));
         assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+    }
+
+    @Test
+    public void testCheckinBook() {
+        Book book = new Book("Gone Girl", "Gillian Flynn", 2012);
+        InputStream inputStream = new ByteArrayInputStream(
+            (
+                "3" + System.getProperty("line.separator") +
+                book.Name() + System.getProperty("line.separator") +
+                book.Author() + System.getProperty("line.separator") +
+                book.YearPublished() + System.getProperty("line.separator") +
+                "1"
+            ).getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        ArrayList<Book> books = getTestBooks();
+        books.add(book);
+        String bookList = String.join("\n", booksToStringArray(books));
+
+        assertThat(testOutStream.toString(), containsString(bookList));
+    }
+
+    @Test
+    public void testCheckinBookIncorrectYearFormat() {
+        InputStream inputStream = new ByteArrayInputStream(
+            (
+                "3" + System.getProperty("line.separator") +
+                "Gone Girl" + System.getProperty("line.separator") +
+                "Gillian Flynn" + System.getProperty("line.separator") +
+                "notayear" + System.getProperty("line.separator") +
+                "1"
+            ).getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+        
+        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks())));
     }
 
     private String[] booksToStringArray(ArrayList<Book> books) {
