@@ -26,16 +26,16 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/Biblioteca.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="225">
-              <caret line="114" column="5" lean-forward="true" selection-start-line="114" selection-start-column="5" selection-end-line="114" selection-end-column="5" />
+              <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#319#325#0" expanded="true" />
                 <element signature="e#341#347#0" expanded="true" />
-                <element signature="e#2720#2721#0" expanded="true" />
+                <element signature="e#2742#2743#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -46,11 +46,11 @@
           <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibiotecaTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2670">
-              <caret line="178" column="21" lean-forward="true" selection-start-line="178" selection-start-column="21" selection-end-line="178" selection-end-column="21" />
+            <state relative-caret-position="206">
+              <caret line="187" column="215" selection-start-line="187" selection-start-column="215" selection-end-line="187" selection-end-column="215" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -105,12 +105,12 @@
         <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BookTest.java" />
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java" />
         <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BookManagerTest.java" />
-        <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BibiotecaTest.java" />
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/Biblioteca.java" />
+        <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BibiotecaTest.java" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="10" />
     <option name="y" value="20" />
     <option name="width" value="1346" />
@@ -170,7 +170,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.BibliotecaApp">
+  <component name="RunManager" selected="JUnit.BibiotecaTest">
     <configuration name="BibliotecaApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.twu.biblioteca.BibliotecaApp" />
       <module name="TWU_Biblioteca-master" />
@@ -237,7 +237,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BibiotecaTest.testPrintWithInvalidInput" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BibiotecaTest.testPrintWelcomeMessage" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="TWU_Biblioteca-master" />
       <extension name="coverage">
         <pattern>
@@ -247,7 +247,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.twu.biblioteca" />
       <option name="MAIN_CLASS_NAME" value="com.twu.biblioteca.BibiotecaTest" />
-      <option name="METHOD_NAME" value="testPrintWithInvalidInput" />
+      <option name="METHOD_NAME" value="testPrintWelcomeMessage" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -255,25 +255,22 @@
     </configuration>
     <list>
       <item itemvalue="JUnit.BibiotecaTest" />
-      <item itemvalue="JUnit.BibiotecaTest.testPrintWithInvalidInput" />
       <item itemvalue="JUnit.BibiotecaTest.testCheckinBookIncorrectYearFormat" />
       <item itemvalue="JUnit.BibiotecaTest.testCheckinBook" />
       <item itemvalue="Application.BibliotecaApp" />
+      <item itemvalue="JUnit.BibiotecaTest.testPrintWelcomeMessage" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BibiotecaTest" />
+        <item itemvalue="JUnit.BibiotecaTest.testPrintWelcomeMessage" />
+        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BibiotecaTest.testCheckinBook" />
         <item itemvalue="JUnit.BibiotecaTest.testCheckinBookIncorrectYearFormat" />
-        <item itemvalue="JUnit.BibiotecaTest.testPrintWithInvalidInput" />
       </list>
     </recent_temporary>
   </component>
   <component name="TestHistory">
-    <history-entry file="BibiotecaTest - 2019.06.04 at 10h 39m 27s.xml">
-      <configuration name="BibiotecaTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="BibiotecaTest - 2019.06.04 at 10h 43m 37s.xml">
       <configuration name="BibiotecaTest" configurationId="JUnit" />
     </history-entry>
@@ -299,6 +296,9 @@
       <configuration name="BibiotecaTest.testCheckinBook" configurationId="JUnit" />
     </history-entry>
     <history-entry file="BibiotecaTest - 2019.06.04 at 10h 56m 37s.xml">
+      <configuration name="BibiotecaTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BibiotecaTest - 2019.06.04 at 11h 21m 49s.xml">
       <configuration name="BibiotecaTest" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -356,16 +356,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibiotecaTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2670">
-          <caret line="178" column="21" lean-forward="true" selection-start-line="178" selection-start-column="21" selection-end-line="178" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
@@ -376,12 +366,22 @@
     <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/Biblioteca.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="114" column="5" lean-forward="true" selection-start-line="114" selection-start-column="5" selection-end-line="114" selection-end-column="5" />
+          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#319#325#0" expanded="true" />
             <element signature="e#341#347#0" expanded="true" />
-            <element signature="e#2720#2721#0" expanded="true" />
+            <element signature="e#2742#2743#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibiotecaTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="206">
+          <caret line="187" column="215" selection-start-line="187" selection-start-column="215" selection-end-line="187" selection-end-column="215" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>

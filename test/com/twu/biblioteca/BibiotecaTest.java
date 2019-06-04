@@ -185,6 +185,6 @@ public class BibiotecaTest {
     }
 
     private String getWelcomeMessage() {
-        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list \n2. Checkout a book\n";
+        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list \n2. Checkout a book\n3. Check in a book\n";
     }
 }

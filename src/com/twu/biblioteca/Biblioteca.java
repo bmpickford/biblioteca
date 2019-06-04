@@ -22,7 +22,7 @@ public class Biblioteca {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
-        this.books = books;
+        this.books.addAll(books);
         this.checkedInBooks.addAll(books);
     }
 
@@ -45,6 +45,7 @@ public class Biblioteca {
                         checkoutBookByName();
                         break;
                     case "3":
+                        printStream.println("Enter the name of the book you want to check in: ");
                         checkInBook();
                         break;
                     case "q":
@@ -62,7 +63,6 @@ public class Biblioteca {
     }
 
     private void checkInBook() {
-        printStream.println("Enter the name of the book you want to check in: ");
         String name = scanner.nextLine();
 
         Book book = getBookByName(name);
