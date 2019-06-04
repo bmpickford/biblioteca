@@ -67,11 +67,9 @@ public class Biblioteca {
 
         Book book = getBookByName(name);
         if (book != null && !isBookCheckedIn(book)) {
-            if (scanner.hasNextInt()) {
-                checkedInBooks.add(book);
-                printStream.println("Thank you for returning the book");
-                return;
-            }
+            checkedInBooks.add(book);
+            printStream.println("Thank you for returning the book");
+            return;
         }
         printStream.println("That's not a valid book to return");
     }
@@ -112,7 +110,8 @@ public class Biblioteca {
         printStream.println("Input the number of your option as shown below: \n" +
                 "0. Quit \n" +
                 "1. Show book list \n" +
-                "2. Checkout a book");
+                "2. Checkout a book\n" +
+                "3. Check in a book");
     }
 
     private void printBookList() {
