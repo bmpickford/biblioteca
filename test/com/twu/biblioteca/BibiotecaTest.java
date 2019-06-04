@@ -105,20 +105,21 @@ public class BibiotecaTest {
 
     @Test
     public void testCheckinBook() {
-        Book book = new Book("Gone Girl", "Gillian Flynn", 2012);
+        String bookName = "The Chamber of Secrets";
         InputStream inputStream = new ByteArrayInputStream(
             (
+                "2" + System.getProperty("line.separator") +
+                bookName + System.getProperty("line.separator") +
                 "3" + System.getProperty("line.separator") +
-                book.Name() + System.getProperty("line.separator") +
-                book.Author() + System.getProperty("line.separator") +
-                book.YearPublished() + System.getProperty("line.separator") +
+                bookName + System.getProperty("line.separator") +
                 "1"
             ).getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-
         ArrayList<Book> books = getTestBooks();
-        books.add(book);
+
+        // Reposition book in list
+        books.add(books.remove(1));
         String bookList = String.join("\n", booksToStringArray(books));
 
         assertThat(testOutStream.toString(), containsString("Thank you for returning the book"));
@@ -126,13 +127,26 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckinBookIncorrectYearFormat() {
+    public void testCheckinBookAlreadyCheckedIn() {
         InputStream inputStream = new ByteArrayInputStream(
             (
                 "3" + System.getProperty("line.separator") +
-                "Gone Girl" + System.getProperty("line.separator") +
-                "Gillian Flynn" + System.getProperty("line.separator") +
-                "notayear" + System.getProperty("line.separator") +
+                "The Chamber of Secrets" + System.getProperty("line.separator") +
+                "1"
+            ).getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+        assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
+    }
+
+    @Test
+    public void testCheckinBookNoSuchBook() {
+        InputStream inputStream = new ByteArrayInputStream(
+            (
+                "3" + System.getProperty("line.separator") +
+                "NotABook" + System.getProperty("line.separator") +
                 "1"
             ).getBytes());
         setupBibliotecaWithInputStream(inputStream);

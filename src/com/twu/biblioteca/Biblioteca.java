@@ -9,22 +9,21 @@ public class Biblioteca {
 
     private Scanner scanner;
     private PrintStream printStream;
-    private InputStream inputStream;
     private ArrayList<Book> books = new ArrayList<Book>();
+    private ArrayList<Book> checkedInBooks = new ArrayList<Book>();
 
     public Biblioteca(PrintStream printStream, InputStream inputStream) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
-        this.inputStream = inputStream;
     }
 
     public Biblioteca(PrintStream printStream, InputStream inputStream, ArrayList<Book> books) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
-        this.inputStream = inputStream;
         this.books = books;
+        this.checkedInBooks.addAll(books);
     }
 
     public void Start() {
@@ -63,30 +62,32 @@ public class Biblioteca {
     }
 
     private void checkInBook() {
-        printStream.println("Enter the name of the book: ");
+        printStream.println("Enter the name of the book you want to check in: ");
         String name = scanner.nextLine();
 
-        printStream.println("Enter the author of the book: ");
-        String author = scanner.nextLine();
-
-        printStream.println("Enter the year the book was published: ");
-        if (scanner.hasNextInt()) {
-            int year = scanner.nextInt();
-            Book book = new Book(name, author, year);
-            books.add(book);
-        } else {
-            printStream.println("Invalid year");
+        Book book = getBookByName(name);
+        if (book != null && !isBookCheckedIn(book)) {
+            if (scanner.hasNextInt()) {
+                checkedInBooks.add(book);
+                printStream.println("Thank you for returning the book");
+                return;
+            }
         }
+        printStream.println("That's not a valid book to return");
     }
 
     private void checkoutBookByName() {
         String bookName = scanner.nextLine();
         Book book = getBookByName(bookName);
-        if (book != null) {
-            removeBook(book);
+        if (book != null && isBookCheckedIn(book)) {
+            checkoutBook(book);
             return;
         }
         printStream.println("Sorry, that book is not available");
+    }
+
+    private boolean isBookCheckedIn(Book book) {
+        return checkedInBooks.contains(book);
     }
 
     private Book getBookByName(String bookName) {
@@ -98,8 +99,8 @@ public class Biblioteca {
         return null;
     }
 
-    private void removeBook(Book book) {
-        books.remove(book);
+    private void checkoutBook(Book book) {
+        checkedInBooks.remove(book);
         printStream.println("Thank you! Enjoy the book");
     }
 
@@ -115,9 +116,9 @@ public class Biblioteca {
     }
 
     private void printBookList() {
-        if (!books.isEmpty()) {
+        if (!checkedInBooks.isEmpty()) {
             printStream.println("\nThe current list of books is: ");
-            for (Book book : books) {
+            for (Book book : checkedInBooks) {
                 printStream.println(book.Name() + " | " + book.Author() + " | " + book.YearPublished());
             }
         } else {
