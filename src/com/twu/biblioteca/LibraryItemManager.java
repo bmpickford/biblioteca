@@ -7,7 +7,7 @@ public class LibraryItemManager {
     private ArrayList<LibraryItem> items = new ArrayList<>();
     private ArrayList<LibraryItem> checkedInItems = new ArrayList<>();
 
-    public LibraryItemManager(LibraryItem ...libraryItem) {
+    public LibraryItemManager(LibraryItem... libraryItem) {
         for(LibraryItem item : libraryItem) {
             items.add(item);
             checkedInItems.add(item);
@@ -36,5 +36,14 @@ public class LibraryItemManager {
 
     public ArrayList<LibraryItem> GetItems() {
         return checkedInItems;
+    }
+
+    public LibraryItem GetItemByName(String name) {
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).name.equals(name)){
+                return items.get(i);
+            }
+        }
+        return null;
     }
 }

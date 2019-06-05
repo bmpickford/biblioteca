@@ -2,30 +2,22 @@ package com.twu.biblioteca;
 
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Biblioteca {
 
     private Scanner scanner;
     private PrintStream printStream;
-    private ArrayList<Book> books = new ArrayList<Book>();
-    private ArrayList<Book> checkedInBooks = new ArrayList<Book>();
+    private LibraryItemManager libraryItemManager;
 
-    public Biblioteca(PrintStream printStream, InputStream inputStream) {
+    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
+        this.libraryItemManager = libraryItemManager;
     }
 
-    public Biblioteca(PrintStream printStream, InputStream inputStream, ArrayList<Book> books) {
-        scanner = new Scanner(inputStream);
-
-        this.printStream = printStream;
-        this.books.addAll(books);
-        this.checkedInBooks.addAll(books);
-    }
-
+    // FIXME: Make this more readable
     public void Start() {
         printWelcomeMessage();
 
@@ -42,11 +34,29 @@ public class Biblioteca {
                         break;
                     case "2":
                         printStream.println("Enter the name of the book you want to checkout: ");
-                        checkoutBookByName();
+                        String checkoutItemName = scanner.nextLine();
+                        LibraryItem checkedOutItem = libraryItemManager.GetItemByName(checkoutItemName);
+                        if (checkedOutItem != null) {
+                            boolean result = libraryItemManager.Checkout(checkedOutItem);
+                            if (result) {
+                                printStream.println("Thank you! Enjoy the book");
+                                break;
+                            }                        }
+                        printStream.println("Sorry, that book is not available");
                         break;
                     case "3":
                         printStream.println("Enter the name of the book you want to check in: ");
-                        checkInBook();
+                        String checkinItemName = scanner.nextLine();
+                        LibraryItem checkedInItem = libraryItemManager.GetItemByName(checkinItemName);
+                        if (checkedInItem != null) {
+                            boolean result = libraryItemManager.Checkin(checkedInItem);
+                            if (result) {
+                                printStream.println("Thank you for returning the book");
+                                break;
+                            }
+                        }
+                        printStream.println("That's not a valid book to return");
+
                         break;
                     case "q":
                     case "Q":
@@ -62,46 +72,6 @@ public class Biblioteca {
         }
     }
 
-    private void checkInBook() {
-        String name = scanner.nextLine();
-
-        Book book = getBookByName(name);
-        if (book != null && !isBookCheckedIn(book)) {
-            checkedInBooks.add(book);
-            printStream.println("Thank you for returning the book");
-            return;
-        }
-        printStream.println("That's not a valid book to return");
-    }
-
-    private void checkoutBookByName() {
-        String bookName = scanner.nextLine();
-        Book book = getBookByName(bookName);
-        if (book != null && isBookCheckedIn(book)) {
-            checkoutBook(book);
-            return;
-        }
-        printStream.println("Sorry, that book is not available");
-    }
-
-    private boolean isBookCheckedIn(Book book) {
-        return checkedInBooks.contains(book);
-    }
-
-    private Book getBookByName(String bookName) {
-        for(int i = 0; i < books.size(); i++) {
-            if (books.get(i).Name().equals(bookName)) {
-                return books.get(i);
-            }
-        }
-        return null;
-    }
-
-    private void checkoutBook(Book book) {
-        checkedInBooks.remove(book);
-        printStream.println("Thank you! Enjoy the book");
-    }
-
     private void printWelcomeMessage() {
         printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
     }
@@ -115,13 +85,6 @@ public class Biblioteca {
     }
 
     private void printBookList() {
-        if (!checkedInBooks.isEmpty()) {
-            printStream.println("\nThe current list of books is: ");
-            for (Book book : checkedInBooks) {
-                printStream.println(book.Name() + " | " + book.Author() + " | " + book.Year());
-            }
-        } else {
-            printStream.println("There are no books");
-        }
+        printStream.println(libraryItemManager.PrintItems());
     }
 }

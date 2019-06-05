@@ -8,7 +8,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.StringContains.containsString;
@@ -18,11 +17,13 @@ public class BibiotecaTest {
 
     private Biblioteca biblioteca;
     private final ByteArrayOutputStream testOutStream = new ByteArrayOutputStream();
+    private LibraryItemManager libraryItemManager;
 
     @Before
     public void setup() {
-        ArrayList<Book> books = getTestBooks();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("q".getBytes()), books);
+        Book[] books = getTestBooks();
+        this.libraryItemManager = new LibraryItemManager(books);
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("q".getBytes()), libraryItemManager);
     }
 
     @After
@@ -66,17 +67,17 @@ public class BibiotecaTest {
         InputStream inputStream = new ByteArrayInputStream("1".getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-        String bookList = String.join("\n", booksToStringArray(getTestBooks()));
+        String bookList = String.join("\n", libraryItemManager.PrintItems());
 
         assertThat(testOutStream.toString(), containsString(bookList));
     }
 
     @Test
-    public void testPrintBookListWithNoBooks() {
-        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()));
+    public void printBookListWithNoBooksDoesntError() {
+        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()), new LibraryItemManager());
         biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "There are no books\n"));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
     }
 
     @Test
@@ -85,9 +86,9 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        ArrayList<Book> books = getTestBooks();
-        books.remove(1);
-        String bookList = String.join("\n", booksToStringArray(books));
+        Book[] books = getTestBooks();
+        books[1] = null;
+        String bookList = String.join("\n", printItemArray(books));
 
         assertThat(testOutStream.toString(), containsString(bookList));
         assertThat(testOutStream.toString(), containsString("Thank you! Enjoy the book"));
@@ -100,7 +101,7 @@ public class BibiotecaTest {
         this.biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString("Sorry, that book is not available"));
-        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+        assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
     }
 
     @Test
@@ -116,11 +117,9 @@ public class BibiotecaTest {
             ).getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-        ArrayList<Book> books = getTestBooks();
-
-        // Reposition book in list
-        books.add(books.remove(1));
-        String bookList = String.join("\n", booksToStringArray(books));
+        Book[] books = getTestBooks();
+        books[1] = null;
+        String bookList = String.join("\n", printItemArray(books));
 
         assertThat(testOutStream.toString(), containsString("Thank you for returning the book"));
         assertThat(testOutStream.toString(), containsString(bookList));
@@ -137,7 +136,7 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+        assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
         assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
     }
 
@@ -152,39 +151,41 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString(String.join("\n", booksToStringArray(getTestBooks()))));
+        assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
         assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
     }
 
-    private String[] booksToStringArray(ArrayList<Book> books) {
-        String[] bookNames = new String[books.size()];
-        for(int i = 0; i < books.size(); i++) {
-            Book book = books.get(i);
-            bookNames[i] = book.Name() + " | " + book.Author() + " | " + book.Year();
-        }
-
-        return bookNames;
-    }
-
-    private ArrayList<Book> getTestBooks() {
-        ArrayList<Book> books = new ArrayList<Book>();
-        books.add(new Book("The Philosopher's Stone", "J.K Rowling", 1997));
-        books.add(new Book("The Chamber of Secrets", "J.K Rowling", 1998));
-        books.add(new Book("The Prisoner of Azkaban", "J.K Rowling", 1999));
-        books.add(new Book("The Goblet of Fire", "J.K Rowling", 2000));
-        books.add(new Book("The Order of the Phoenix", "J.K Rowling", 2003));
-        books.add(new Book("The Half-Blood Prince", "J.K Rowling", 2005));
-        books.add(new Book("The Deathly Hallows", "J.K Rowling", 2007));
+    private Book[] getTestBooks() {
+        Book[] books = {
+            new Book("The Philosopher's Stone", "J.K Rowling", 1997),
+            new Book("The Chamber of Secrets", "J.K Rowling", 1998),
+            new Book("The Prisoner of Azkaban", "J.K Rowling", 1999),
+            new Book("The Goblet of Fire", "J.K Rowling", 2000),
+            new Book("The Order of the Phoenix", "J.K Rowling", 2003),
+            new Book("The Half-Blood Prince", "J.K Rowling", 2005),
+            new Book("The Deathly Hallows", "J.K Rowling", 2007),
+        };
 
         return books;
     }
 
     private void setupBibliotecaWithInputStream(InputStream inputStream) {
-        ArrayList<Book> books = getTestBooks();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, books);
+        Book[] books = getTestBooks();
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(books));
     }
 
     private String getWelcomeMessage() {
         return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list \n2. Checkout a book\n3. Check in a book\n";
+    }
+
+    private String printItemArray(LibraryItem[] items) {
+        StringBuilder printedItems = new StringBuilder();
+        for(LibraryItem item : items) {
+            if (item != null) {
+                printedItems.append(item.PrintDetails()).append("\n");
+            }
+        }
+
+        return printedItems.toString();
     }
 }
