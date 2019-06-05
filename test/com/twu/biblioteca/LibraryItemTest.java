@@ -5,7 +5,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class BookTest {
+public class LibraryItemTest {
 
     @Test
     public void BookNameIsEqual() {
@@ -53,5 +53,13 @@ public class BookTest {
     public void BookZeroYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 0);
         assertThat(book.Year(), is(0));
+    }
+
+    @Test
+    public void MoviePrintsCorrectDetails() {
+        Movie movie = new Movie("Inception", "Christopher Nolan", 2010, Movie.RatingOption.NINE);
+        String expected = "Inception | Christopher Nolan | 2010 | 9 | Movie";
+
+        assertThat(movie.PrintDetails(), is(expected));
     }
 }

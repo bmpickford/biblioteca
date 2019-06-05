@@ -4,10 +4,12 @@ public class Book extends LibraryItem {
 
     private String author;
 
-    public Book(String name, String author, int yearPublished) {
+    private final String type = "Book";
+
+    public Book(String name, String author, int year) {
         this.name = name;
         this.author = author;
-        this.year = yearPublished;
+        this.year = year;
     }
 
     public String Author() {
@@ -15,6 +17,10 @@ public class Book extends LibraryItem {
     }
 
     public String PrintDetails() {
-        return String.join(" | ", Name(), Author(), String.valueOf(Year()));
+        return String.join(" | ", Name(), Author(), String.valueOf(Year()), type);
+    }
+
+    public String Type() {
+        return type;
     }
 }

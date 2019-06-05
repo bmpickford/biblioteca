@@ -21,8 +21,8 @@ public class BibiotecaTest {
 
     @Before
     public void setup() {
-        Book[] books = getTestBooks();
-        this.libraryItemManager = new LibraryItemManager(books);
+        LibraryItem[] items = getTestItems();
+        this.libraryItemManager = new LibraryItemManager(items);
         this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("q".getBytes()), libraryItemManager);
     }
 
@@ -86,9 +86,9 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        Book[] books = getTestBooks();
-        books[1] = null;
-        String bookList = String.join("\n", printItemArray(books));
+        LibraryItem[] items = getTestItems();
+        items[1] = null;
+        String bookList = String.join("\n", printItemArray(items));
 
         assertThat(testOutStream.toString(), containsString(bookList));
         assertThat(testOutStream.toString(), containsString("Thank you! Enjoy the book"));
@@ -117,9 +117,9 @@ public class BibiotecaTest {
             ).getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
-        Book[] books = getTestBooks();
-        books[1] = null;
-        String bookList = String.join("\n", printItemArray(books));
+        LibraryItem[] items = getTestItems();
+        items[1] = null;
+        String bookList = String.join("\n", printItemArray(items));
 
         assertThat(testOutStream.toString(), containsString("Thank you for returning the book"));
         assertThat(testOutStream.toString(), containsString(bookList));
@@ -155,23 +155,20 @@ public class BibiotecaTest {
         assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
     }
 
-    private Book[] getTestBooks() {
-        Book[] books = {
+    private LibraryItem[] getTestItems() {
+        LibraryItem[] items = {
             new Book("The Philosopher's Stone", "J.K Rowling", 1997),
             new Book("The Chamber of Secrets", "J.K Rowling", 1998),
             new Book("The Prisoner of Azkaban", "J.K Rowling", 1999),
-            new Book("The Goblet of Fire", "J.K Rowling", 2000),
-            new Book("The Order of the Phoenix", "J.K Rowling", 2003),
-            new Book("The Half-Blood Prince", "J.K Rowling", 2005),
-            new Book("The Deathly Hallows", "J.K Rowling", 2007),
+            new Movie("The Lion King", "Rob Minkoff", 1994, Movie.RatingOption.EIGHT)
         };
 
-        return books;
+        return items;
     }
 
     private void setupBibliotecaWithInputStream(InputStream inputStream) {
-        Book[] books = getTestBooks();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(books));
+        LibraryItem[] items = getTestItems();
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items));
     }
 
     private String getWelcomeMessage() {

@@ -14,4 +14,5 @@ public abstract class LibraryItem {
     }
 
     public abstract String PrintDetails();
+    public abstract String Type();
 }

@@ -6,11 +6,8 @@ public class BibliotecaApp {
         LibraryItemManager libraryItemManager = new LibraryItemManager(
             new Book("Where's Wally?", "Martin Handford", 1987),
             new Book("Where's Wally Now?", "Martin Handford", 1988),
-            new Book("Where's Wally? The Fantastic Journey", "Martin Handford", 1989),
-            new Book("Where's Wally in Hollywood?", "Martin Handford", 1993),
-            new Book("Where's Wally? The Wonder Book", "Martin Handford", 1997),
-            new Book("WWhere's Wally? The Great Picture Hunt!", "Martin Handford", 2006),
-            new Book("Where's Wally? The Incredible Paper Chase", "Martin Handford", 2009)
+            new Movie("Easy", "Jane Weinstock", 2003, Movie.RatingOption.FIVE),
+            new Movie("Red", "Robert Schwentke", 2010, Movie.RatingOption.SEVEN)
         );
         Biblioteca biblioteca = new Biblioteca(System.out, System.in, libraryItemManager);
         biblioteca.Start();
