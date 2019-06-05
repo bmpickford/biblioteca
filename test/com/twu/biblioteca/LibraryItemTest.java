@@ -56,6 +56,14 @@ public class LibraryItemTest {
     }
 
     @Test
+    public void BookPrintsCorrectDetails() {
+        Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 1970);
+        String expected = "Jonothan Livingstone Seagull | Richard Baci | 1970 | Book";
+
+        assertThat(book.PrintDetails(), is(expected));
+    }
+
+    @Test
     public void MoviePrintsCorrectDetails() {
         Movie movie = new Movie("Inception", "Christopher Nolan", 2010, Movie.RatingOption.NINE);
         String expected = "Inception | Christopher Nolan | 2010 | 9 | Movie";

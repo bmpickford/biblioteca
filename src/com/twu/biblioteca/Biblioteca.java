@@ -37,7 +37,7 @@ public class Biblioteca {
                 case EXIT:
                     return;
                 case LIST_ITEMS:
-                    printBookList();
+                    printItemList();
                     break;
                 case CHECKOUT:
                     checkoutItem();
@@ -67,7 +67,7 @@ public class Biblioteca {
     }
 
     private void checkinItem() {
-        printStream.println("Enter the name of the item you want to check in: ");
+        printStream.println("Enter the name of the item you want to checkin: ");
         String checkinItemName = scanner.nextLine();
 
         LibraryItem checkedInItem = libraryItemManager.GetItemByName(checkinItemName);
@@ -82,34 +82,34 @@ public class Biblioteca {
     }
 
     private void printWelcomeMessage() {
-        printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!");
+        printStream.println("Welcome to Biblioteca. Your one-stop-shop for great book and movie titles in Bangalore!");
     }
 
     private void printCheckoutSuccessMessage() {
-        printStream.println("Thank you! Enjoy the book");
+        printStream.println("Thank you! Enjoy the item");
     }
 
     private void printCheckoutFailMessage() {
-        printStream.println("Sorry, that book is not available");
+        printStream.println("Sorry, that item is not available");
     }
 
     private void printCheckinSuccessMessage() {
-        printStream.println("Thank you for returning the book");
+        printStream.println("Thank you for returning the item");
     }
 
     private void printCheckinFailMessage() {
-        printStream.println("That's not a valid book to return");
+        printStream.println("That's not a valid item to return");
     }
 
     private void printOptionsMessage() {
         printStream.println("Input the number of your option as shown below: \n" +
                 "0. Quit \n" +
-                "1. Show book list \n" +
-                "2. Checkout a book\n" +
-                "3. Check in a book");
+                "1. Show items list \n" +
+                "2. Checkout an item\n" +
+                "3. Checkin an item");
     }
 
-    private void printBookList() {
+    private void printItemList() {
         printStream.println(libraryItemManager.PrintItems());
     }
 }
