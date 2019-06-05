@@ -20,7 +20,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkoutShouldRemoveItemFromLibraryItemList() {
+    public void ShouldRemoveItemFromLibraryItemListOnCheckout() {
         boolean result = libraryItemManager.Checkout(book1);
         ArrayList<Book> expectedList = new ArrayList<>();
         expectedList.add(book2);
@@ -30,7 +30,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkoutNonExistentBookShouldNotRemoveItemFromList() {
+    public void ShouldNotRemoveItemFromListUsingNonExistentBook() {
         boolean result = libraryItemManager.Checkout(new Book("", "", 1900));
         ArrayList<Book> expectedList = new ArrayList<>();
         expectedList.add(book1);
@@ -41,7 +41,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkoutAlreadyCheckedOutBookShouldNotRemoveItemFromList() {
+    public void ShouldNotRemoveItemFromListWhenAlreadyCheckedOutBook() {
         boolean result = libraryItemManager.Checkout(book1);
         assertThat(result, is(true));
 
@@ -54,7 +54,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkinItemShouldAddToLibraryItemList() {
+    public void ShouldAddToLibraryItemListOnCheckin() {
         boolean result = libraryItemManager.Checkout(book1);
         assertThat(result, is(true));
 
@@ -68,7 +68,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkinItemThatHasNotBeenCheckedOutShouldNotBeAddedAgain() {
+    public void ItemThatHasNotBeenCheckedOutShouldNotBeAddedAgainOnCheckin() {
         ArrayList<Book> expectedList = new ArrayList<>();
         expectedList.add(book1);
         expectedList.add(book2);
@@ -79,7 +79,7 @@ public class LibraryManagerTest {
     }
 
     @Test
-    public void checkinItemThatDoesntExistShouldNotBeAdded() {
+    public void ItemThatDoesntExistShouldNotBeAddedOnCheckin() {
         ArrayList<Book> expectedList = new ArrayList<>();
         expectedList.add(book1);
         expectedList.add(book2);

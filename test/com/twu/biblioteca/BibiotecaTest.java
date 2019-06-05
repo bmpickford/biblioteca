@@ -33,13 +33,13 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testPrintWelcomeMessage() {
+    public void ShouldPrintWelcomeMessage() {
         this.biblioteca.Start();
         assertThat(testOutStream.toString(), is(getWelcomeMessage()));
     }
 
     @Test
-    public void testPrintWithZeroInput() {
+    public void ShouldPrintInvalidOptionWithByteInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] { 0 }));
         this.biblioteca.Start();
 
@@ -47,7 +47,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testPrintWithInvalidInput() {
+    public void ShouldPrintInvalidOptionWithABCInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream("abc".getBytes()));
         this.biblioteca.Start();
 
@@ -55,7 +55,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testPrintWithNoInput() {
+    public void ShouldPrintWelcomeMessageWithNoInput() {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] {}));
         this.biblioteca.Start();
 
@@ -63,7 +63,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testPrintBookList() {
+    public void ShouldPrintBookList() {
         InputStream inputStream = new ByteArrayInputStream("1".getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
@@ -73,7 +73,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void printBookListWithNoBooksDoesntError() {
+    public void ShouldNotErrorWhenNoBooksAreAvailable() {
         Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()), new LibraryItemManager());
         biblioteca.Start();
 
@@ -81,7 +81,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckoutBookByName() {
+    public void ShouldCheckoutBookUsingBookName() {
         InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Chamber of Secrets" + System.getProperty("line.separator") + "1\nq").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
@@ -95,7 +95,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckoutBookIncorrectName() {
+    public void ShouldNotSuccessfullyCheckoutBookWithIncorrectName() {
         InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Phils Stove" + System.getProperty("line.separator") + "1").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
@@ -105,7 +105,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckinBook() {
+    public void ShouldCheckinBookWhenRequested() {
         String bookName = "The Chamber of Secrets";
         InputStream inputStream = new ByteArrayInputStream(
             (
@@ -126,7 +126,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckinBookAlreadyCheckedIn() {
+    public void ShouldNotCheckInBookAlreadyCheckedIn() {
         InputStream inputStream = new ByteArrayInputStream(
             (
                 "3" + System.getProperty("line.separator") +
@@ -141,7 +141,7 @@ public class BibiotecaTest {
     }
 
     @Test
-    public void testCheckinBookNoSuchBook() {
+    public void ShouldNotCheckInBookThatDoesntExistInLibrary() {
         InputStream inputStream = new ByteArrayInputStream(
             (
                 "3" + System.getProperty("line.separator") +

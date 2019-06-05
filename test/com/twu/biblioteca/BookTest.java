@@ -8,49 +8,49 @@ import static org.junit.Assert.assertThat;
 public class BookTest {
 
     @Test
-    public void TestBookName() {
+    public void BookNameIsEqual() {
         Book book = new Book("name", "", 0);
         assertThat(book.Name(), is("name"));
     }
 
     @Test
-    public void TestEmptyBookName() {
+    public void EmptyBookNameIsEqual() {
         Book book = new Book("", "", 0);
         assertThat(book.Name(), is(""));
     }
 
     @Test
-    public void TestBookNameWithSpecialCharacters() {
+    public void BookNameWithSpecialCharactersIsEqual() {
         Book book = new Book("\nthis-is_a\\book", "", 0);
         assertThat(book.Name(), is("\nthis-is_a\\book"));
     }
 
     @Test
-    public void TestBookAuthor() {
+    public void BookAuthor() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 0);
         assertThat(book.Author(), is("Richard Baci"));
     }
 
     @Test
-    public void TestBookEmptyAuthor() {
+    public void BookEmptyAuthor() {
         Book book = new Book("Jonothan Livingstone Seagull", "", 0);
         assertThat(book.Author(), is(""));
     }
 
     @Test
-    public void TestBookYear() {
+    public void BookYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 1970);
         assertThat(book.Year(), is(1970));
     }
 
     @Test
-    public void TestBookNegativeYear() {
+    public void BookNegativeYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", -1970);
         assertThat(book.Year(), is(-1970));
     }
 
     @Test
-    public void TestBookZeroYear() {
+    public void BookZeroYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 0);
         assertThat(book.Year(), is(0));
     }
