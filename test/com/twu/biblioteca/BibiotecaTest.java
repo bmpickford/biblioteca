@@ -35,7 +35,7 @@ public class BibiotecaTest {
     @Test
     public void ShouldPrintWelcomeMessage() {
         this.biblioteca.Start();
-        assertThat(testOutStream.toString(), is(getWelcomeMessage()));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
     }
 
     @Test
