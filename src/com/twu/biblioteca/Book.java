@@ -23,4 +23,8 @@ public class Book {
     public int YearPublished() {
         return yearPublished;
     }
+
+    public String PrintDetails() {
+        return String.join(" | ", Name(), Author(), String.valueOf(YearPublished()));
+    }
 }
