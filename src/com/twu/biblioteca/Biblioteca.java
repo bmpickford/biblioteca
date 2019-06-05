@@ -118,7 +118,7 @@ public class Biblioteca {
         if (!checkedInBooks.isEmpty()) {
             printStream.println("\nThe current list of books is: ");
             for (Book book : checkedInBooks) {
-                printStream.println(book.Name() + " | " + book.Author() + " | " + book.YearPublished());
+                printStream.println(book.Name() + " | " + book.Author() + " | " + book.Year());
             }
         } else {
             printStream.println("There are no books");

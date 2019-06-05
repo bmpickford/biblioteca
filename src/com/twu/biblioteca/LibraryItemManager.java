@@ -4,37 +4,37 @@ import java.util.ArrayList;
 
 public class LibraryItemManager {
 
-    private ArrayList<Book> items = new ArrayList<>();
-    private ArrayList<Book> checkedInItems = new ArrayList<>();
+    private ArrayList<LibraryItem> items = new ArrayList<>();
+    private ArrayList<LibraryItem> checkedInItems = new ArrayList<>();
 
-    public LibraryItemManager(Book ...book) {
-        for(Book b : book) {
-            items.add(b);
-            checkedInItems.add(b);
+    public LibraryItemManager(LibraryItem ...libraryItem) {
+        for(LibraryItem item : libraryItem) {
+            items.add(item);
+            checkedInItems.add(item);
         }
     }
 
-    public boolean Checkout(Book book) {
-        return checkedInItems.remove(book);
+    public boolean Checkout(LibraryItem libraryItem) {
+        return checkedInItems.remove(libraryItem);
     }
 
-    public boolean Checkin(Book book) {
-        if (items.contains(book) && !checkedInItems.contains(book)) {
-            return checkedInItems.add(book);
+    public boolean Checkin(LibraryItem libraryItem) {
+        if (items.contains(libraryItem) && !checkedInItems.contains(libraryItem)) {
+            return checkedInItems.add(libraryItem);
         }
         return false;
     }
 
     public String PrintItems() {
         StringBuilder printedItems = new StringBuilder();
-        for(Book item : checkedInItems) {
+        for(LibraryItem item : checkedInItems) {
             printedItems.append(item.PrintDetails()).append("\n");
         }
 
         return printedItems.toString();
     }
 
-    public ArrayList<Book> GetItems() {
+    public ArrayList<LibraryItem> GetItems() {
         return checkedInItems;
     }
 }

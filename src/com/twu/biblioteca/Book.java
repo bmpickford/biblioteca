@@ -1,30 +1,20 @@
 package com.twu.biblioteca;
 
-public class Book {
+public class Book extends LibraryItem {
 
-    private String name;
     private String author;
-    private int yearPublished;
 
     public Book(String name, String author, int yearPublished) {
         this.name = name;
         this.author = author;
-        this.yearPublished = yearPublished;
-    }
-
-    public String Name() {
-        return name;
+        this.year = yearPublished;
     }
 
     public String Author() {
         return author;
     }
 
-    public int YearPublished() {
-        return yearPublished;
-    }
-
     public String PrintDetails() {
-        return String.join(" | ", Name(), Author(), String.valueOf(YearPublished()));
+        return String.join(" | ", Name(), Author(), String.valueOf(Year()));
     }
 }

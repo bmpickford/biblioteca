@@ -160,7 +160,7 @@ public class BibiotecaTest {
         String[] bookNames = new String[books.size()];
         for(int i = 0; i < books.size(); i++) {
             Book book = books.get(i);
-            bookNames[i] = book.Name() + " | " + book.Author() + " | " + book.YearPublished();
+            bookNames[i] = book.Name() + " | " + book.Author() + " | " + book.Year();
         }
 
         return bookNames;

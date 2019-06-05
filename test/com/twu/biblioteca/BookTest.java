@@ -40,18 +40,18 @@ public class BookTest {
     @Test
     public void TestBookYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 1970);
-        assertThat(book.YearPublished(), is(1970));
+        assertThat(book.Year(), is(1970));
     }
 
     @Test
     public void TestBookNegativeYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", -1970);
-        assertThat(book.YearPublished(), is(-1970));
+        assertThat(book.Year(), is(-1970));
     }
 
     @Test
     public void TestBookZeroYear() {
         Book book = new Book("Jonothan Livingstone Seagull", "Richard Baci", 0);
-        assertThat(book.YearPublished(), is(0));
+        assertThat(book.Year(), is(0));
     }
 }
