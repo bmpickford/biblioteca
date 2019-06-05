@@ -1,5 +1,6 @@
 package com.twu.biblioteca;
 
+import javax.naming.AuthenticationException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.Scanner;
@@ -9,18 +10,25 @@ public class Biblioteca {
     private Scanner scanner;
     private PrintStream printStream;
     private LibraryItemManager libraryItemManager;
+    private Authorizer authorizer;
+    private Customer loggedInCustomer = null;
 
-    // Input options used
+    // Input options used for authorized users
     public static final String EXIT = "0";
     public static final String LIST_ITEMS = "1";
     public static final String CHECKOUT = "2";
     public static final String CHECKIN = "3";
+    public static final String LOGOUT = "4";
 
-    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager) {
+    // Input options used for unauthorized users
+    public static final String LOGIN = "1";
+
+    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager, Authorizer authorizer) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
         this.libraryItemManager = libraryItemManager;
+        this.authorizer = authorizer;
     }
 
     public void Start() {
@@ -28,26 +36,78 @@ public class Biblioteca {
 
         // Main loop for input options
         while (true) {
-            printOptionsMessage();
-
-            if (!scanner.hasNext()) {
-                return;
-            }
-            switch (scanner.nextLine()) {
-                case EXIT:
+            if (loggedInCustomer != null) {
+                if (showAuthorizedOptions()) {
                     return;
-                case LIST_ITEMS:
-                    printItemList();
-                    break;
-                case CHECKOUT:
-                    checkoutItem();
-                    break;
-                case CHECKIN:
-                    checkinItem();
-                    break;
-                default:
-                    printStream.println("That is not a valid option");
+                }
+            } else {
+                if (showUnauthorizedOptions()) {
+                    return;
+                }
             }
+        }
+
+    }
+
+    // Operates the input based on the authorized options. Returns true if the program should exit
+    private boolean showAuthorizedOptions() {
+        printOptionsMessage();
+
+        if (!scanner.hasNext()) {
+            return true;
+        }
+        switch (scanner.nextLine()) {
+            case EXIT:
+                return true;
+            case LIST_ITEMS:
+                printItemList();
+                break;
+            case CHECKOUT:
+                checkoutItem();
+                break;
+            case CHECKIN:
+                checkinItem();
+                break;
+            case LOGOUT:
+                printStream.println("Logout success");
+                loggedInCustomer = null;
+                break;
+            default:
+                printStream.println("That is not a valid option");
+        }
+        return false;
+    }
+
+    // Operates the input based on the unauthorized options. Returns true if the program should exit
+    private boolean showUnauthorizedOptions() {
+        printLoginOptionsMessage();
+
+        if (!scanner.hasNext()) {
+            return true;
+        }
+        switch (scanner.nextLine()) {
+            case EXIT:
+                return true;
+            case LOGIN:
+                loginCustomer();
+                break;
+            default:
+                printStream.println("That is not a valid option");
+        }
+        return false;
+    }
+
+    private void loginCustomer() {
+        printStream.println("Enter your username: ");
+        String username = scanner.nextLine();
+
+        printStream.println("Enter your password: ");
+        String password = scanner.nextLine();
+
+        try {
+            loggedInCustomer = authorizer.Authorize(username, password);
+        } catch (AuthenticationException e) {
+            printStream.println("Invalid credentials");
         }
     }
 
@@ -103,10 +163,17 @@ public class Biblioteca {
 
     private void printOptionsMessage() {
         printStream.println("Input the number of your option as shown below: \n" +
-                "0. Quit \n" +
-                "1. Show items list \n" +
+                "0. Quit\n" +
+                "1. Show items list\n" +
                 "2. Checkout an item\n" +
-                "3. Checkin an item");
+                "3. Checkin an item\n" +
+                "4. Logout");
+    }
+
+    private void printLoginOptionsMessage() {
+        printStream.println("Input the number of your option as shown below: \n" +
+                "0. Quit\n" +
+                "1. Login");
     }
 
     private void printItemList() {

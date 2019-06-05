@@ -19,11 +19,24 @@ public class BibiotecaTest {
     private final ByteArrayOutputStream testOutStream = new ByteArrayOutputStream();
     private LibraryItemManager libraryItemManager;
 
+    private Customer customer = new Customer("000-0000", "password");
+
     @Before
     public void setup() {
         LibraryItem[] items = getTestItems();
         this.libraryItemManager = new LibraryItemManager(items);
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("q".getBytes()), libraryItemManager);
+        this.biblioteca = new Biblioteca(
+                new PrintStream(testOutStream),
+                new ByteArrayInputStream((loginCustomerCommands(customer) + "0").getBytes()),
+                libraryItemManager,
+                new Authorizer(customer)
+        );
+    }
+
+    private String loginCustomerCommands(Customer customer) {
+        return "1" + System.getProperty("line.separator") +
+                customer.Username() + System.getProperty("line.separator") +
+                customer.Password() + System.getProperty("line.separator");
     }
 
     @After
@@ -36,6 +49,7 @@ public class BibiotecaTest {
     public void ShouldPrintWelcomeMessage() {
         this.biblioteca.Start();
         assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
+        assertThat(testOutStream.toString(), containsString(getAuthorizedOptionsMessage()));
     }
 
     @Test
@@ -43,7 +57,8 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] { 0 }));
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "That is not a valid option\n"));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
+        assertThat(testOutStream.toString(), containsString("That is not a valid option\n"));
     }
 
     @Test
@@ -51,7 +66,8 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(new ByteArrayInputStream("abc".getBytes()));
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString(getWelcomeMessage() + "That is not a valid option\n"));
+        assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
+        assertThat(testOutStream.toString(), containsString("That is not a valid option\n"));
     }
 
     @Test
@@ -59,12 +75,12 @@ public class BibiotecaTest {
         setupBibliotecaWithInputStream(new ByteArrayInputStream(new byte[] {}));
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), is(getWelcomeMessage() + ""));
+        assertThat(testOutStream.toString(), is(getWelcomeMessage() + getUnAuthorizedOptionsMessage()));
     }
 
     @Test
     public void ShouldPrintBookList() {
-        InputStream inputStream = new ByteArrayInputStream("1".getBytes());
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "1").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
         String bookList = String.join("\n", libraryItemManager.PrintItems());
@@ -74,7 +90,7 @@ public class BibiotecaTest {
 
     @Test
     public void ShouldNotErrorWhenNoBooksAreAvailable() {
-        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream("1".getBytes()), new LibraryItemManager());
+        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream((loginCustomerCommands(customer) + "1").getBytes()), new LibraryItemManager(), new Authorizer(customer));
         biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
@@ -82,7 +98,7 @@ public class BibiotecaTest {
 
     @Test
     public void ShouldCheckoutBookUsingBookName() {
-        InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Chamber of Secrets" + System.getProperty("line.separator") + "1\nq").getBytes());
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "2" + System.getProperty("line.separator") + "The Chamber of Secrets" + System.getProperty("line.separator") + "1\nq").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
@@ -91,16 +107,16 @@ public class BibiotecaTest {
         String bookList = String.join("\n", printItemArray(items));
 
         assertThat(testOutStream.toString(), containsString(bookList));
-        assertThat(testOutStream.toString(), containsString("Thank you! Enjoy the book"));
+        assertThat(testOutStream.toString(), containsString("Thank you! Enjoy the item"));
     }
 
     @Test
     public void ShouldNotSuccessfullyCheckoutBookWithIncorrectName() {
-        InputStream inputStream = new ByteArrayInputStream(("2" + System.getProperty("line.separator") + "The Phils Stove" + System.getProperty("line.separator") + "1").getBytes());
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "2" + System.getProperty("line.separator") + "The Phils Stove" + System.getProperty("line.separator") + "1").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
-        assertThat(testOutStream.toString(), containsString("Sorry, that book is not available"));
+        assertThat(testOutStream.toString(), containsString("Sorry, that item is not available"));
         assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
     }
 
@@ -109,6 +125,7 @@ public class BibiotecaTest {
         String bookName = "The Chamber of Secrets";
         InputStream inputStream = new ByteArrayInputStream(
             (
+                loginCustomerCommands(customer) +
                 "2" + System.getProperty("line.separator") +
                 bookName + System.getProperty("line.separator") +
                 "3" + System.getProperty("line.separator") +
@@ -121,7 +138,7 @@ public class BibiotecaTest {
         items[1] = null;
         String bookList = String.join("\n", printItemArray(items));
 
-        assertThat(testOutStream.toString(), containsString("Thank you for returning the book"));
+        assertThat(testOutStream.toString(), containsString("Thank you for returning the item"));
         assertThat(testOutStream.toString(), containsString(bookList));
     }
 
@@ -129,6 +146,7 @@ public class BibiotecaTest {
     public void ShouldNotCheckInBookAlreadyCheckedIn() {
         InputStream inputStream = new ByteArrayInputStream(
             (
+                loginCustomerCommands(customer) +
                 "3" + System.getProperty("line.separator") +
                 "The Chamber of Secrets" + System.getProperty("line.separator") +
                 "1"
@@ -137,13 +155,14 @@ public class BibiotecaTest {
         this.biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
-        assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
+        assertThat(testOutStream.toString(), containsString("That's not a valid item to return"));
     }
 
     @Test
     public void ShouldNotCheckInBookThatDoesntExistInLibrary() {
         InputStream inputStream = new ByteArrayInputStream(
             (
+                loginCustomerCommands(customer) +
                 "3" + System.getProperty("line.separator") +
                 "NotABook" + System.getProperty("line.separator") +
                 "1"
@@ -152,7 +171,16 @@ public class BibiotecaTest {
         this.biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString(String.join("\n", libraryItemManager.PrintItems())));
-        assertThat(testOutStream.toString(), containsString("That's not a valid book to return"));
+        assertThat(testOutStream.toString(), containsString("That's not a valid item to return"));
+    }
+
+    @Test
+    public void LogoutShouldReturnOptionsToUnauthorized() {
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "4").getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        assertThat(testOutStream.toString(), containsString("Logout success"));
     }
 
     private LibraryItem[] getTestItems() {
@@ -168,11 +196,19 @@ public class BibiotecaTest {
 
     private void setupBibliotecaWithInputStream(InputStream inputStream) {
         LibraryItem[] items = getTestItems();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items));
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items), new Authorizer(new Customer("000-0000", "password")));
     }
 
     private String getWelcomeMessage() {
-        return "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!\nInput the number of your option as shown below: \n0. Quit \n1. Show book list \n2. Checkout a book\n3. Check in a book\n";
+        return "Welcome to Biblioteca. Your one-stop-shop for great book and movie titles in Bangalore!\n";
+    }
+
+    private String getAuthorizedOptionsMessage() {
+        return "Input the number of your option as shown below: \n0. Quit\n1. Show items list\n2. Checkout an item\n3. Checkin an item\n4. Logout";
+    }
+
+    private String getUnAuthorizedOptionsMessage() {
+        return "Input the number of your option as shown below: \n0. Quit\n1. Login\n";
     }
 
     private String printItemArray(LibraryItem[] items) {
