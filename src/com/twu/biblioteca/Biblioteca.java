@@ -18,7 +18,8 @@ public class Biblioteca {
     public static final String LIST_ITEMS = "1";
     public static final String CHECKOUT = "2";
     public static final String CHECKIN = "3";
-    public static final String LOGOUT = "4";
+    public static final String VIEW_CUSTOMER_DETAILS = "4";
+    public static final String LOGOUT = "5";
 
     // Input options used for unauthorized users
     public static final String LOGIN = "1";
@@ -68,14 +69,25 @@ public class Biblioteca {
             case CHECKIN:
                 checkinItem();
                 break;
+            case VIEW_CUSTOMER_DETAILS:
+                printCustomerDetails();
+                break;
             case LOGOUT:
-                printStream.println("Logout success");
-                loggedInCustomer = null;
+                logoutCustomer();
                 break;
             default:
                 printStream.println("That is not a valid option");
         }
         return false;
+    }
+
+    private void printCustomerDetails() {
+        printStream.println(loggedInCustomer.PrintDetails());
+    }
+
+    private void logoutCustomer() {
+        printStream.println("Logout success");
+        loggedInCustomer = null;
     }
 
     // Operates the input based on the unauthorized options. Returns true if the program should exit
@@ -167,7 +179,8 @@ public class Biblioteca {
                 "1. Show items list\n" +
                 "2. Checkout an item\n" +
                 "3. Checkin an item\n" +
-                "4. Logout");
+                "4. View my details\n" +
+                "5. Logout");
     }
 
     private void printLoginOptionsMessage() {

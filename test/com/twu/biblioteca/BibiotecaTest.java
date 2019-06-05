@@ -19,7 +19,7 @@ public class BibiotecaTest {
     private final ByteArrayOutputStream testOutStream = new ByteArrayOutputStream();
     private LibraryItemManager libraryItemManager;
 
-    private Customer customer = new Customer("000-0000", "password");
+    private Customer customer = new Customer("000-0000", "password", "User", "test@user.com", "0400000000");
 
     @Before
     public void setup() {
@@ -176,11 +176,20 @@ public class BibiotecaTest {
 
     @Test
     public void LogoutShouldReturnOptionsToUnauthorized() {
-        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "4").getBytes());
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "5").getBytes());
         setupBibliotecaWithInputStream(inputStream);
         this.biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString("Logout success"));
+    }
+
+    @Test
+    public void ShouldPrintCustomerDetails() {
+        InputStream inputStream = new ByteArrayInputStream((loginCustomerCommands(customer) + "4").getBytes());
+        setupBibliotecaWithInputStream(inputStream);
+        this.biblioteca.Start();
+
+        assertThat(testOutStream.toString(), containsString(customer.PrintDetails()));
     }
 
     private LibraryItem[] getTestItems() {
@@ -196,7 +205,7 @@ public class BibiotecaTest {
 
     private void setupBibliotecaWithInputStream(InputStream inputStream) {
         LibraryItem[] items = getTestItems();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items), new Authorizer(new Customer("000-0000", "password")));
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items), new Authorizer(customer));
     }
 
     private String getWelcomeMessage() {
@@ -204,7 +213,7 @@ public class BibiotecaTest {
     }
 
     private String getAuthorizedOptionsMessage() {
-        return "Input the number of your option as shown below: \n0. Quit\n1. Show items list\n2. Checkout an item\n3. Checkin an item\n4. Logout";
+        return "Input the number of your option as shown below: \n0. Quit\n1. Show items list\n2. Checkout an item\n3. Checkin an item\n4. View my details\n5. Logout";
     }
 
     private String getUnAuthorizedOptionsMessage() {

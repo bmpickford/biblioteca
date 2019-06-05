@@ -12,7 +12,7 @@ import static org.hamcrest.core.IsNull.notNullValue;
 public class AuthorizerTest {
 
     private Authorizer authorizer;
-    private final Customer authorizedCustomer = new Customer("000-0000", "password");
+    private final Customer authorizedCustomer = new Customer("000-0000", "password", "Test", "test@user.com", "0400000000");
 
     @Before
     public void CustomerSetup() {
