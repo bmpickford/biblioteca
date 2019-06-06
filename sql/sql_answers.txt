@@ -1,0 +1,71 @@
+1.
+QUERY: 
+SELECT member.name 
+FROM checkout_item 
+JOIN member ON member_id = member.id 
+JOIN book ON book_id = book.id 
+WHERE book.title = 'The Hobbit';
+
+ANSWER:
+Anand Beck
+
+2.
+QUERY:
+SELECT COUNT(*) 
+FROM member 
+LEFT JOIN checkout_item ON member_id = id 
+WHERE checkout_item.member_id IS NULL;
+
+ANSWER:
+37
+
+3.
+QUERY:
+SELECT 'BOOK', book.title 
+FROM book 
+WHERE book.id NOT IN (
+    SELECT book_id FROM checkout_item WHERE book_id IS NOT NULL
+)
+UNION
+SELECT 'MOVIE', movie.title 
+FROM movie 
+WHERE movie.id NOT IN (
+    SELECT movie_id FROM checkout_item WHERE movie_id IS NOT NULL
+);
+
+BOOK|1984
+BOOK|Catcher in the Rye
+BOOK|Domain Driven Design
+BOOK|Fellowship of the Ring
+BOOK|To Kill a Mockingbird
+BOOK|Tom Sawyer
+MOVIE|Crouching Tiger, Hidden Dragon
+MOVIE|Lawrence of Arabia
+MOVIE|Office Space
+MOVIE|Thin Red Line
+
+4.
+QUERIES:
+INSERT INTO book(title) VALUES("The Pragmatic Programmer");
+INSERT INTO member(name) VALUES("Benjamin");
+INSERT INTO checkout_item(member_id, book_id) VALUES((SELECT member.id FROM member WHERE name = "Benjamin"), (SELECT book.id FROM book WHERE title = "The Pragmatic Programmer"));
+
+ANSWER:
+SELECT member.name 
+FROM checkout_item 
+JOIN member ON member_id = member.id 
+JOIN book ON book_id = book.id 
+WHERE book.title = 'The Pragmatic Programmer';
+Benjamin
+
+5.
+QUERY:
+SELECT member.* 
+FROM checkout_item 
+JOIN member ON member_id = id 
+GROUP BY member_id 
+HAVING COUNT(*) > 1;
+
+ANSWER:
+1|Anand Beck
+6|Frank Smith
