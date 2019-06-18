@@ -26,7 +26,7 @@ public class LibraryManagerTest {
     public void ShouldRemoveItemFromLibraryItemListOnCheckout() {
         boolean result = libraryItemManager.Checkout(book1);
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book2); add(movie1); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book2); add(movie1); add(movie2); }});
 
         assertThat(result, is(true));
         assertThat(libraryItemManager.GetItems(), is(expectedList));
@@ -36,7 +36,7 @@ public class LibraryManagerTest {
     public void ShouldNotRemoveItemFromListUsingNonExistentBook() {
         boolean result = libraryItemManager.Checkout(new Book("", "", 1900));
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
 
         assertThat(result, is(false));
         assertThat(libraryItemManager.GetItems(), is(expectedList));
@@ -49,7 +49,7 @@ public class LibraryManagerTest {
 
         result = libraryItemManager.Checkout(book1);
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book2); add(movie1); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book2); add(movie1); add(movie2); }});
 
         assertThat(result, is(false));
         assertThat(libraryItemManager.GetItems(), is(expectedList));
@@ -61,7 +61,7 @@ public class LibraryManagerTest {
         assertThat(result, is(true));
 
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book2); add(movie1); add(movie2); add(book1); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book2); add(movie1); add(movie2); add(book1); }});
 
         result = libraryItemManager.Checkin(book1);
         assertThat(result, is(true));
@@ -71,7 +71,7 @@ public class LibraryManagerTest {
     @Test
     public void ItemThatHasNotBeenCheckedOutShouldNotBeAddedAgainOnCheckin() {
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
 
         boolean result = libraryItemManager.Checkin(book1);
         assertThat(result, is(false));
@@ -81,7 +81,7 @@ public class LibraryManagerTest {
     @Test
     public void ItemThatDoesntExistShouldNotBeAddedOnCheckin() {
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book1); add(book2); add(movie1); add(movie2); }});
 
         boolean result = libraryItemManager.Checkin(new Book("", "", 1900));
         assertThat(result, is(false));
@@ -97,7 +97,7 @@ public class LibraryManagerTest {
         assertThat(result, is(true));
 
         ArrayList<LibraryItem> expectedList = new ArrayList<>();
-        expectedList.addAll(new ArrayList<>(){{ add(book2); add(movie2); }});
+        expectedList.addAll(new ArrayList<LibraryItem>(){{ add(book2); add(movie2); }});
 
         assertThat(libraryItemManager.GetItems(), is(expectedList));
     }

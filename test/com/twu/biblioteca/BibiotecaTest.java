@@ -19,7 +19,7 @@ public class BibiotecaTest {
     private final ByteArrayOutputStream testOutStream = new ByteArrayOutputStream();
     private LibraryItemManager libraryItemManager;
 
-    private Customer customer = new Customer("000-0000", "password", "User", "test@user.com", "0400000000");
+    private Customer customer = new Customer("000-0000", "password", "Bob", "bob@builder.com", "0400000000");
 
     @Before
     public void setup() {
@@ -29,7 +29,7 @@ public class BibiotecaTest {
                 new PrintStream(testOutStream),
                 new ByteArrayInputStream((loginCustomerCommands(customer) + "0").getBytes()),
                 libraryItemManager,
-                new Authorizer(customer)
+                Authenticator.getInstance()
         );
     }
 
@@ -90,7 +90,7 @@ public class BibiotecaTest {
 
     @Test
     public void ShouldNotErrorWhenNoBooksAreAvailable() {
-        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream((loginCustomerCommands(customer) + "1").getBytes()), new LibraryItemManager(), new Authorizer(customer));
+        Biblioteca biblioteca = new Biblioteca(new PrintStream(testOutStream), new ByteArrayInputStream((loginCustomerCommands(customer) + "1").getBytes()), new LibraryItemManager(), Authenticator.getInstance());
         biblioteca.Start();
 
         assertThat(testOutStream.toString(), containsString(getWelcomeMessage()));
@@ -205,7 +205,7 @@ public class BibiotecaTest {
 
     private void setupBibliotecaWithInputStream(InputStream inputStream) {
         LibraryItem[] items = getTestItems();
-        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items), new Authorizer(customer));
+        this.biblioteca = new Biblioteca(new PrintStream(testOutStream), inputStream, new LibraryItemManager(items), Authenticator.getInstance());
     }
 
     private String getWelcomeMessage() {

@@ -9,9 +9,7 @@ public class BibliotecaApp {
             new Movie("Easy", "Jane Weinstock", 2003, Movie.RatingOption.FIVE),
             new Movie("Red", "Robert Schwentke", 2010, Movie.RatingOption.SEVEN)
         );
-        Customer customer1 = new Customer("000-0000", "password", "Bob", "bob@builder.com", "0400000000");
-        Customer customer2 = new Customer("000-0001", "password", "Scoop", "scoop@digger.com", "02000000");
-        Biblioteca biblioteca = new Biblioteca(System.out, System.in, libraryItemManager, new Authorizer(customer1, customer2));
+        Biblioteca biblioteca = new Biblioteca(System.out, System.in, libraryItemManager, Authenticator.getInstance());
         biblioteca.Start();
     }
 }

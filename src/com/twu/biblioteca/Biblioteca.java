@@ -10,7 +10,7 @@ public class Biblioteca {
     private Scanner scanner;
     private PrintStream printStream;
     private LibraryItemManager libraryItemManager;
-    private Authorizer authorizer;
+    private Authenticator authenticator;
     private Customer loggedInCustomer = null;
 
     // Input options used for authorized users
@@ -24,12 +24,12 @@ public class Biblioteca {
     // Input options used for unauthorized users
     public static final String LOGIN = "1";
 
-    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager, Authorizer authorizer) {
+    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager, Authenticator authenticator) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
         this.libraryItemManager = libraryItemManager;
-        this.authorizer = authorizer;
+        this.authenticator = authenticator;
     }
 
     public void Start() {
@@ -117,7 +117,7 @@ public class Biblioteca {
         String password = scanner.nextLine();
 
         try {
-            loggedInCustomer = authorizer.Authorize(username, password);
+            loggedInCustomer = authenticator.Authorize(username, password);
         } catch (AuthenticationException e) {
             printStream.println("Invalid credentials");
         }
