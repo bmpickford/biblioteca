@@ -32,7 +32,13 @@ run {
     standardInput = System.in
 }
 
-sourceSets.main.java.srcDirs = ['src']
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src']
+        }
+    }
+}
 
 // Define the main class for the application
 mainClassName = 'com.twu.biblioteca.BibliotecaApp'

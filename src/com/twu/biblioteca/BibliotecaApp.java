@@ -9,7 +9,7 @@ public class BibliotecaApp {
             new Movie("Easy", "Jane Weinstock", 2003, Movie.RatingOption.FIVE),
             new Movie("Red", "Robert Schwentke", 2010, Movie.RatingOption.SEVEN)
         );
-        Biblioteca biblioteca = new Biblioteca(System.out, System.in, libraryItemManager, Authenticator.getInstance());
+        Biblioteca biblioteca = new Biblioteca(System.out, System.in, libraryItemManager);
         biblioteca.Start();
     }
 }

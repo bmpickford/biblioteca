@@ -10,7 +10,7 @@ public class Biblioteca {
     private Scanner scanner;
     private PrintStream printStream;
     private LibraryItemManager libraryItemManager;
-    private Authenticator authenticator;
+    private Authenticator authenticator = Authenticator.getInstance();
     private Customer loggedInCustomer = null;
 
     // Input options used for authorized users
@@ -24,12 +24,11 @@ public class Biblioteca {
     // Input options used for unauthorized users
     public static final String LOGIN = "1";
 
-    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager, Authenticator authenticator) {
+    public Biblioteca(PrintStream printStream, InputStream inputStream, LibraryItemManager libraryItemManager) {
         scanner = new Scanner(inputStream);
 
         this.printStream = printStream;
         this.libraryItemManager = libraryItemManager;
-        this.authenticator = authenticator;
     }
 
     public void Start() {
